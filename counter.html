@@ -19,36 +19,96 @@ button.de {
 	padding-top : 0; 
 	padding-bottom : 0; 
 	} 
+div#counted { 
+	font-size : 30pt; 
+	text-align : center; 
+	} 
 	</style> 
-<p> 
+<div id="buttonBracket" > 
 	<button id="counter" > count 123 </button><button id="decounter" class="de" >-</button>
 	<button id="untilFill" > / 999 fill </button><button id="deFiller" class="de" >-</button>
-	</p>
+	</div> 
+<div id="counted" > 
+	123
+	</div> 
 
 <script> 
-var counter = $` #counter ` 
-var decounter = $` #decounter ` 
-var untilFill = $` #untilFill ` 
-var deFiller = $` #deFiller ` 
+
+{ 
+/// 
+
+let counter = $` #counter ` 
+let decounter = $` #decounter ` 
+let untilFill = $` #untilFill ` 
+let deFiller = $` #deFiller ` 
+
+let histories = [] 
 
 counterExcute( new class { 
 	counter = counter 
+	counterForm = counterForm 
 	button = counter 
 	action = n => n + 1 
-	} )  
+	} ) 
+counterExcute( new class { 
+	counter = counter 
+	counterForm = counterForm 
+	button = decounter 
+	action = n => n - 1 
+	} ) 
+counterExcute( new class { 
+	counter = untilFill 
+	counterForm = fillForm 
+	button = untilFill 
+	action = n => n + 1 
+	} ) 
+counterExcute( new class { 
+	counter = untilFill 
+	counterForm = fillForm 
+	button = deFiller 
+	action = n => n - 1 
+	} ) 
 
-function counterExcute({ counter, button, action }) { 
+// .. functions .. 
+
+function counterForm( n ) { 
+	return `count ${ n }` 
+	} 
+function fillForm( n ) { 
+	return `/ ${ n } fill` 
+	} 
+
+function counterExcute({ 
+		  counter 
+		, counterForm 
+		, button 
+		, action 
+		}) { 
 	button .onclick = evt => { 
-		let { innerText } = counter 
-		let [ countText ] = innerText .match( /\d+/ ) 
-		let count = + countText 
-		let next = action( count ) 
+		let count = doCounterForm({ counter, counterForm, action }) 
 		
-		counter .innerText = next ?? count 
+		let now = [ count, new Date ] 
+		histories .push( now ) 
+		console .log( now, histories .length ) 
 		} // -- button onclick() 
 	} // -- counterExcute() 
 
+function doCounterForm({ counter, counterForm, action }) { 
+	let { innerText } = counter 
+	let [ countText ] = innerText .match( /\d+/ ) 
+	let count = + countText 
+	let next = action( count ) 
+	let nextText = counterForm( next ?? count ) 
+	
+	counter .innerText = nextText 
+	
+	return count 
+	} 
+
 function $( q ) { return document .querySelector( q ) } 
+
+/// 
+} 
 	</script> 
 
 	</body> 
