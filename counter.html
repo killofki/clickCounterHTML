@@ -121,7 +121,7 @@ function last( a ) {
 
 function doCounterForm({ counter, counterForm, action }) { 
 	let { innerText } = counter 
-	let [ lastText ] = innerText .match( /\d+/ ) 
+	let [ lastText ] = innerText .match( /[+\-]?\d+/ ) 
 	let last = + lastText
 	let count = action( last ) 
 	let countText = counterForm( count ?? last ) 
