@@ -41,6 +41,7 @@ let counter = $` #counter `
 let decounter = $` #decounter ` 
 let untilFill = $` #untilFill ` 
 let deFiller = $` #deFiller ` 
+let counted = $` #counted ` 
 
 let histories = [] 
 
@@ -95,10 +96,11 @@ function counterExcute({
 		let { length } = histories 
 		
 		for ( let i = length - 1; i >= 0; i -= 1 ) { 
-			let [, iTime ] = histories[ i ] 
+			let [ lastCount, iTime ] = histories[ i ] 
 			let gab = iTime - lastTime 
 			
-			if ( length - i > 3 ) 
+			counted .innerHTML = [ lastCount, gab ] 
+			if ( length - i > 1 ) 
 				{ break } 
 			} 
 		} // -- button onclick() 
