@@ -17,14 +17,18 @@ button {
 	padding : 10pt; 
 	} 
 	</style> 
-<button id="counter" > count 123 </button> / 999 fill 
+<button id="counter" > count 123 </button> 
+<button id="untilFill" > / 999 fill </button>
 
 <script> 
-var counter = $ ` #counter ` 
-console .log( counter ) 
-console .log( counter .innerText ) 
+var counter = $` #counter ` 
 
-// ah .. chrome rack (?) .. 
+counter .onclick = evt => { 
+	let { innerText } = counter 
+	let [ countText ] = innerText .match( /\d+/ ) 
+	let count = + countText 
+	console .log( { innerText, countText, count } ) 
+	} 
 
 function $( q ) { return document .querySelector( q ) } 
 	</script> 
