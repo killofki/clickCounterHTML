@@ -1,0 +1,33 @@
+<!doctype html> 
+<html> 
+<head> 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+	</head> 
+<body> 
+
+<style> 
+body { 
+	font-size : 30pt; 
+	margin : 30pt; 
+	background-color : #b5b5b5; 
+	} 
+
+button { 
+	font-size : 30pt; 
+	padding : 10pt; 
+	} 
+	</style> 
+<button id="counter" > count 123 </button> / 999 fill 
+
+<script> 
+var counter = $ ` #counter ` 
+console .log( counter ) 
+console .log( counter .innerText ) 
+
+// ah .. chrome rack (?) .. 
+
+function $( q ) { return document .querySelector( q ) } 
+	</script> 
+
+	</body> 
+	</html> 
