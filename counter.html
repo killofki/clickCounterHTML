@@ -23,6 +23,12 @@ div {
 	font-size : 30pt; 
 	text-align : center; 
 	} 
+div#resetZone { 
+	text-align : right; 
+	} 
+button#reset { 
+	font-size : 12pt; 
+	} 
 	</style> 
 <div id="buttonBracket" > 
 	<button id="counter" > count 0 </button><button id="decounter" class="de" >-</button>
@@ -30,6 +36,9 @@ div {
 	</div> 
 <div id="counted" > 
 	123
+	</div> 
+<div id="resetZone" > 
+	<button id="reset" >reset</button> 
 	</div> 
 
 <script> 
@@ -42,6 +51,7 @@ let decounter = $` #decounter `
 let untilFill = $` #untilFill ` 
 let deFiller = $` #deFiller ` 
 let counted = $` #counted ` 
+let reset = $` #reset ` 
 
 let histories = [ [ 0, 0 ] ] // with reset point 
 
@@ -69,6 +79,11 @@ counterExcute( new class {
 	button = deFiller 
 	action = n => n - 1 
 	} ) 
+reset .onclick = evt => { 
+	histories = [ [ 0, 0 ] ] 
+	console .log( 'reset' ) 
+	counter .innerText = 'count 0' 
+	} 
 
 // .. functions .. 
 
@@ -121,7 +136,7 @@ function last( a ) {
 
 function doCounterForm({ counter, counterForm, action }) { 
 	let { innerText } = counter 
-	let [ lastText ] = innerText .match( /[+\-]?\d+/ ) 
+	let [ lastText ] = innerText .match( /[+\-]?\d+/ ) || '0' 
 	let last = + lastText
 	let count = action( last ) 
 	let countText = counterForm( count ?? last ) 
