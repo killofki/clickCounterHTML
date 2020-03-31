@@ -90,8 +90,14 @@ function counterExcute({
 		let now = [ count, new Date ] 
 		histories .push( now ) 
 		console .log( now, histories .length ) 
+		console .log( last( histories ) ) 
 		} // -- button onclick() 
 	} // -- counterExcute() 
+
+function last( a ) { 
+	let { length } = a 
+	return a[ length - 1 ] 
+	} 
 
 function doCounterForm({ counter, counterForm, action }) { 
 	let { innerText } = counter 
