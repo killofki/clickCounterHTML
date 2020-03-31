@@ -19,14 +19,14 @@ button.de {
 	padding-top : 0; 
 	padding-bottom : 0; 
 	} 
-div#counted { 
+div { 
 	font-size : 30pt; 
 	text-align : center; 
 	} 
 	</style> 
 <div id="buttonBracket" > 
-	<button id="counter" > count 123 </button><button id="decounter" class="de" >-</button>
-	<button id="untilFill" > / 999 fill </button><button id="deFiller" class="de" >-</button>
+	<button id="counter" > count 0 </button><button id="decounter" class="de" >-</button>
+	/ <button id="untilFill" > 999 fill </button><button id="deFiller" class="de" >-</button>
 	</div> 
 <div id="counted" > 
 	123
@@ -43,7 +43,7 @@ let untilFill = $` #untilFill `
 let deFiller = $` #deFiller ` 
 let counted = $` #counted ` 
 
-let histories = [] 
+let histories = [ [ 0, 0 ] ] // with reset point 
 
 counterExcute( new class { 
 	counter = counter 
@@ -70,16 +70,13 @@ counterExcute( new class {
 	action = n => n - 1 
 	} ) 
 
-counter .click() 
-histories[ 0 ][ 1 ] = 0 // reset point 
-
 // .. functions .. 
 
 function counterForm( n ) { 
 	return `count ${ n }` 
 	} 
 function fillForm( n ) { 
-	return `/ ${ n } fill` 
+	return `${ n } fill` 
 	} 
 
 function counterExcute({ 
@@ -88,8 +85,7 @@ function counterExcute({
 		, button 
 		, action 
 		}) { 
-	let remainTime = 1000 * 5 
-		// ms seconds minutes 
+	let remainTime = 1000 * 5 // 5 sec 
 	
 	button .onclick = evt => { 
 		let count = doCounterForm({ counter, counterForm, action }) 
@@ -98,7 +94,8 @@ function counterExcute({
 		histories .push( now ) 
 		console .log( now, histories .length ) 
 		
-		let [, lastTime ] = last( histories ) 
+		let lastObj = last( histories ) 
+		let [, lastTime ] = lastObj 
 		let { length } = histories 
 		
 		for ( let i = length - 1; i >= 0; i -= 1 ) { // trace back from last 
@@ -107,14 +104,12 @@ function counterExcute({
 			let countDiff = count - lastCount 
 			
 			lastTime = iTime 
-			console .log({ lastCount, iTime, gab }) 
-			counted .innerHTML = [ `${ countDiff < 0 ? '' : '+' }${ countDiff }`, gab ] 
+			let diffText = `${ countDiff < 0 ? '' : '+' }${ countDiff }` 
+			counted .innerHTML = diffText 
 			if ( gab > remainTime ) { 
-				console .log( gab ) 
 				break 
 				} 
-			} 
-		console .log({ lastTime }) 
+			} // -- for backtrace histories 
 		
 		} // -- button onclick() 
 	} // -- counterExcute() 
@@ -126,12 +121,12 @@ function last( a ) {
 
 function doCounterForm({ counter, counterForm, action }) { 
 	let { innerText } = counter 
-	let [ countText ] = innerText .match( /\d+/ ) 
-	let count = + countText 
-	let next = action( count ) 
-	let nextText = counterForm( next ?? count ) 
+	let [ lastText ] = innerText .match( /\d+/ ) 
+	let last = + lastText
+	let count = action( last ) 
+	let countText = counterForm( count ?? last ) 
 	
-	counter .innerText = nextText 
+	counter .innerText = countText 
 	
 	return count 
 	} // -- doCounterForm() 
