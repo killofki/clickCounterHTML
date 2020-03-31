@@ -93,9 +93,11 @@ function counterExcute({
 		
 		let [, lastTime ] = last( histories ) 
 		let { length } = histories 
+		
 		for ( let i = length - 1; i >= 0; i -= 1 ) { 
 			let [, iTime ] = histories[ i ] 
-			console .log( iTime - lastTime ) 
+			let gab = iTime - lastTime 
+			
 			if ( length - i > 3 ) 
 				{ break } 
 			} 
@@ -117,7 +119,7 @@ function doCounterForm({ counter, counterForm, action }) {
 	counter .innerText = nextText 
 	
 	return count 
-	} 
+	} // -- doCounterForm() 
 
 function $( q ) { return document .querySelector( q ) } 
 
