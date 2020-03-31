@@ -70,6 +70,9 @@ counterExcute( new class {
 	action = n => n - 1 
 	} ) 
 
+counter .click() 
+histories[ 0 ][ 1 ] = 0 // reset point 
+
 // .. functions .. 
 
 function counterForm( n ) { 
@@ -85,6 +88,9 @@ function counterExcute({
 		, button 
 		, action 
 		}) { 
+	let remainTime = 1000 * 5 
+		// ms seconds minutes 
+	
 	button .onclick = evt => { 
 		let count = doCounterForm({ counter, counterForm, action }) 
 		
@@ -95,15 +101,21 @@ function counterExcute({
 		let [, lastTime ] = last( histories ) 
 		let { length } = histories 
 		
-		for ( let i = length - 1; i >= 0; i -= 1 ) { 
+		for ( let i = length - 1; i >= 0; i -= 1 ) { // trace back from last 
 			let [ lastCount, iTime ] = histories[ i ] 
-			let gab = iTime - lastTime 
-			let countDiff = lastCount - count 
+			let gab = lastTime - iTime 
+			let countDiff = count - lastCount 
 			
+			lastTime = iTime 
+			console .log({ lastCount, iTime, gab }) 
 			counted .innerHTML = [ `${ countDiff < 0 ? '' : '+' }${ countDiff }`, gab ] 
-			if ( length - i > 1 ) 
-				{ break } 
+			if ( gab > remainTime ) { 
+				console .log( gab ) 
+				break 
+				} 
 			} 
+		console .log({ lastTime }) 
+		
 		} // -- button onclick() 
 	} // -- counterExcute() 
 
