@@ -7,28 +7,46 @@
 
 <style> 
 body { 
-	font-size : 30pt; 
-	margin : 30pt; 
 	background-color : #b5b5b5; 
 	} 
 
 button { 
 	font-size : 30pt; 
 	padding : 10pt; 
+	vertical-align : bottom; 
+	} 
+button.de { 
+	padding-top : 0; 
+	padding-bottom : 0; 
 	} 
 	</style> 
-<button id="counter" > count 123 </button> 
-<button id="untilFill" > / 999 fill </button>
+<p> 
+	<button id="counter" > count 123 </button><button id="decounter" class="de" >-</button>
+	<button id="untilFill" > / 999 fill </button><button id="deFiller" class="de" >-</button>
+	</p>
 
 <script> 
 var counter = $` #counter ` 
+var decounter = $` #decounter ` 
+var untilFill = $` #untilFill ` 
+var deFiller = $` #deFiller ` 
 
-counter .onclick = evt => { 
-	let { innerText } = counter 
-	let [ countText ] = innerText .match( /\d+/ ) 
-	let count = + countText 
-	console .log( { innerText, countText, count } ) 
-	} 
+counterExcute( new class { 
+	counter = counter 
+	button = counter 
+	action = n => n + 1 
+	} )  
+
+function counterExcute({ counter, button, action }) { 
+	button .onclick = evt => { 
+		let { innerText } = counter 
+		let [ countText ] = innerText .match( /\d+/ ) 
+		let count = + countText 
+		let next = action( count ) 
+		
+		counter .innerText = next ?? count 
+		} // -- button onclick() 
+	} // -- counterExcute() 
 
 function $( q ) { return document .querySelector( q ) } 
 	</script> 
